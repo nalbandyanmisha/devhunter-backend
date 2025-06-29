@@ -1,7 +1,7 @@
 FROM ghcr.io/nalbandyanmisha/devhunter-base:latest
 
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci
 
 # Copy the rest of the application files
 COPY . .
