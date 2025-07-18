@@ -2,7 +2,6 @@ import { Candidate } from '../models/Candidate.js';
 const createCandidate = async (req, res) => {
   try {
     const { count } = req.body;
-    console.log("count:", count);
     if (!count || isNaN(count) || count <= 0) {
       return res.status(400).json({ error: 'Invalid count parameter' });
     }
@@ -29,15 +28,17 @@ const getCandidates = async (req, res) => {
 const generateCandidates = function(count) {
   const candidates = [];
   const schemaPaths = Candidate.schema.paths;
-  const techLanguages = Candidate.schema.path('techLanguages').enumValues;
+  const techLanguages = Candidate.schema.path('techLanguages').caster.enumValues;
   const experiences = Candidate.schema.path('experience').enumValues;
   const positions = Candidate.schema.path('position').enumValues;
 
   for (let i = 0; i < count; i++) {
+    const techLanguagesList = getRandomElements(techLanguages, Math.floor(Math.random() * techLanguages.length) + 1);
+    console.log("techLanguagesList:", techLanguagesList);
     candidates.push({
       "firstName": `Zarzand`,
       "lastName": `Zarzandyan`,
-      "techLanguages": techLanguages[Math.floor(Math.random() * techLanguages.length)],
+      "techLanguages": getRandomElements(techLanguages, Math.floor(Math.random() * techLanguages.length) + 1),
       "experience": experiences[Math.floor(Math.random() * experiences.length)],
       "position": positions[Math.floor(Math.random() * positions.length)],
       "salaryRange": {
@@ -51,5 +52,10 @@ const generateCandidates = function(count) {
   return candidates;
 
 }
+
+const getRandomElements = (array, count) => {
+  const shuffled = array.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+};
 
 export {createCandidate, getCandidates};

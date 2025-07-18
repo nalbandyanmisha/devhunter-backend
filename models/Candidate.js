@@ -12,7 +12,7 @@ const candidateSchema = new mongoose.Schema({
     trim: true,
   },
   techLanguages: {
-    type: String,
+    type: [String],
     enum: ['CSS', 'JavaScript', 'Python', 'NodeJS', 'ReactJS', 'NextJS', 'C++'],
     required: true,
   },
